@@ -3,7 +3,8 @@ Chatterino Red - A fork of Chatterino 2
 ============
 
 Chatterino 2 is a chat client for [Twitch.tv](https://twitch.tv).
-The Chatterino 2 wiki can be found [here](https://wiki.chatterino.com). Chatterino Red allows you to use a other process as a proxy for the chat.
+The Chatterino 2 wiki can be found [here](https://wiki.chatterino.com). Visit the original repository [here](https://github.com/Chatterino/chatterino2).
+ Chatterino Red allows you to use a other process as a proxy for the chat.
 
 ## Download
 
