@@ -31,7 +31,7 @@ This will require more than 30GB of free space on your hard drive.
 ## Building
 
 1. Clone
-   - `git clone --recurse-submodules https://github.com/Chatterino/chatterino2.git`
+   - `git clone --recurse-submodules https://github.com/dodaucy/chatterino-red.git`
 1. Install dependencies
    - `cd .\chatterino2\`
    - `vcpkg install`

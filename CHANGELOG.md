@@ -1,5 +1,7 @@
 # Changelog
 
+That is the changelog for the original Chatterino repository, not for Chatterino Red.
+
 ## Unversioned
 
 - Minor: Migrated viewer list to Helix API. (#4117)

@@ -61,7 +61,7 @@ Maintainer: Mm2PL <mm2pl@kotmisia.pl>
 Depends: $dependencies
 Section: net
 Priority: optional
-Homepage: https://github.com/Chatterino/chatterino2
+Homepage: https://github.com/dodaucy/chatterino-red
 Description: Ubuntu package built for $ubuntu_release
 EOF
 cat "$packaging_dir/DEBIAN/control"

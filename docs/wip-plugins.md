@@ -28,11 +28,11 @@ Example file:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/Chatterino/chatterino2/master/docs/plugin-info.schema.json",
+  "$schema": "https://raw.githubusercontent.com/dodaucy/chatterino-red/master/docs/plugin-info.schema.json",
   "name": "Test plugin",
   "description": "This plugin is for testing stuff.",
   "authors": "Mm2PL",
-  "homepage": "https://github.com/Chatterino/Chatterino2",
+  "homepage": "https://github.com/dodaucy/chatterino-red",
   "tags": ["test"],
   "version": "0.0.0",
   "license": "MIT"

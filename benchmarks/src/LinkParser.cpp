@@ -12,7 +12,7 @@ using namespace chatterino;
 const QString INPUT = QStringLiteral(
     "If your Chatterino isn't loading FFZ emotes, update to the latest nightly "
     "(or 2.4.2 if its out) "
-    "https://github.com/Chatterino/chatterino2/releases/tag/nightly-build "
+    "https://github.com/dodaucy/chatterino-red/releases/tag/nightly-build "
     "AlienPls https://www.youtube.com/watch?v=ELBBiBDcWc0 "
     "127.0.3 aaaa xd 256.256.256.256 AsdQwe xd 127.0.0.1 https://. https://.be "
     "https://a http://a.b https://a.be ftp://xdd.com "
