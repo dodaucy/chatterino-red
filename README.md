@@ -110,6 +110,4 @@ def index(message: Message):
         }
 ```
 
-<video controls>
-  <source src="example.mp4" type="video/mp4">
-</video>
+![Example](example.gif)
