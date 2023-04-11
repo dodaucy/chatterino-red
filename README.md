@@ -56,7 +56,7 @@ Open this folder and create a file called `red_settings.json`. The file should c
 
 ## Proxy
 
-The proxy should be a HTTP server that simply waits for a POST request on `/`. The request contains JSON data with the following keys:
+The proxy should be a HTTP server that simply waits for a POST request at the configured URL. The request contains JSON data with the following keys:
 
 - `channel`: The channel name
 
@@ -66,13 +66,13 @@ You can then do whatever you want and return an action as an response. The respo
 
 - `send`: You need to return a `channel` and `message` key with the channel and message you want to send. You can easily use the original channel and message when you want to send the message normal.
 
-- `ignore`: You can ignore the message by not returning this.
+- `ignore`: You can ignore the message by returning this.
 
 - `system_message`: You can send a system message by returning a `message` key with the message you want to send. This message will be sent in the Chatterino Client.
 
 ### Example
 
-You need to install `pip install fastapi[all] pydantic` to run this example with `uvicorn SCRIPT_NAME:app`.
+You need to install `pip install fastapi[all] pydantic` / `pip3 install fastapi[all] pydantic` to run this example with `py -m uvicorn SCRIPT_NAME:app` / `python3 -m uvicorn SCRIPT_NAME:app`.
 
 ```python
 from fastapi import FastAPI
