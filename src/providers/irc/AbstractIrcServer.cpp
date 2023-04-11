@@ -5,6 +5,7 @@
 #include "messages/LimitedQueueSnapshot.hpp"
 #include "messages/Message.hpp"
 #include "messages/MessageBuilder.hpp"
+#include "singletons/Paths.hpp"
 
 #include <QCoreApplication>
 
@@ -174,7 +175,83 @@ void AbstractIrcServer::disconnect()
 void AbstractIrcServer::sendMessage(const QString &channelName,
                                     const QString &message)
 {
-    this->sendRawMessage("PRIVMSG #" + channelName + " :" + message);
+    // Read settings
+    QString red_settings_path = QString::fromStdString(getPaths()->settingsDirectory.toStdString() + "/red_settings.json");
+    QFile file(red_settings_path);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        this->addGlobalSystemMessage("Couldn't open red_settings.json");
+        return;
+    }
+    QByteArray data = file.readAll();
+    QJsonDocument _doc(QJsonDocument::fromJson(data));
+    QJsonObject settings = _doc.object();
+    if (!settings.contains("proxy_url"))
+    {
+        this->addGlobalSystemMessage("Couldn't find 'proxy_url' in red_settings.json");
+        return;
+    }
+    QString proxy_url = settings["proxy_url"].toString();
+    if (!proxy_url.startsWith("http://") && !proxy_url.startsWith("https://"))
+    {
+        proxy_url = "http://" + proxy_url;
+    }
+
+    // Send message to the proxy server
+    QNetworkRequest request(proxy_url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QJsonObject json;
+    json["channel"] = channelName;
+    json["message"] = message;
+    QJsonDocument doc(json);
+    QByteArray bytes = doc.toJson();
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    QNetworkReply *reply = manager->post(request, bytes);
+    QObject::connect(reply, &QNetworkReply::finished, this, [reply, this] {
+        if (reply->error() == QNetworkReply::NoError)
+        {
+            QString response = reply->readAll();
+            QJsonDocument jsonResponse = QJsonDocument::fromJson(response.toUtf8());
+            QJsonObject jsonObject = jsonResponse.object();
+            if (!jsonObject.contains("action"))
+            {
+                this->addGlobalSystemMessage("Proxy error: no action");
+                return;
+            }
+            QString action = jsonObject["action"].toString();
+            if (action == "send")
+            {
+                // Send message to the IRC server
+                if (!jsonObject.contains("channel") || !jsonObject.contains("message"))
+                {
+                    this->addGlobalSystemMessage("Proxy error: missing channel or message");
+                    return;
+                }
+                QString channelName = jsonObject["channel"].toString();
+                QString message = jsonObject["message"].toString();
+                this->sendRawMessage("PRIVMSG #" + channelName + " :" + message);
+            }
+            else if (action == "system_message")
+            {
+                // Send system message to the client
+                if (!jsonObject.contains("message"))
+                {
+                    this->addGlobalSystemMessage("Proxy error: missing message");
+                    return;
+                }
+                QString message = jsonObject["message"].toString();
+                this->addGlobalSystemMessage(message);
+            }
+            else if (action != "ignore")
+            {
+                this->addGlobalSystemMessage("Proxy error: unknown action: " + action);
+            }
+        }
+        else
+        {
+            this->addGlobalSystemMessage("Proxy error: " + reply->errorString());
+        }
+    });
 }
 
 void AbstractIrcServer::sendRawMessage(const QString &rawMessage)
